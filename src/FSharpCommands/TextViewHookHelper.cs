@@ -24,6 +24,9 @@ namespace Hestia.FSharpCommands
         [Import]
         internal IVsEditorAdaptersFactoryService AdaptersFactory { get; set; }
 
+        [Import]
+        internal IEditorOptionsFactoryService EditorOptionsFactory { get; set; }
+
         public IMouseProcessor GetAssociatedProcessor(IWpfTextView wpfTextView)
         {
             System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
@@ -31,11 +34,16 @@ namespace Hestia.FSharpCommands
                 var view = AdaptersFactory.GetViewAdapter(wpfTextView);
                 if (view != null)
                 {
-                    StandardCommandDispatcher.Register(view, wpfTextView);
+                    StandardCommandDispatcher.Register(view, wpfTextView, GetServices());
                 }
             }));
 
             return null;
+        }
+
+        private Services GetServices()
+        {
+            return new Services(EditorOptionsFactory);
         }
     }
 }

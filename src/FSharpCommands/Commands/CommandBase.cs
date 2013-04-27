@@ -11,6 +11,8 @@ namespace Hestia.FSharpCommands.Commands
     {
         public IWpfTextView TextView { get; set; }
 
+        public Services Services { get; set; }
+
         public abstract void Execute();
     }
 }

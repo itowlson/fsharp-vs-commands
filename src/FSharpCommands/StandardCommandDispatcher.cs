@@ -14,12 +14,14 @@ namespace Hestia.FSharpCommands
     public class StandardCommandDispatcher : IOleCommandTarget
     {
         private IWpfTextView _textView;
+        private Services _services;
         private IOleCommandTarget _commandChain;
 
-        public static void Register(IVsTextView interopTextView, IWpfTextView textView)
+        public static void Register(IVsTextView interopTextView, IWpfTextView textView, Services services)
         {
             var dispatcher = new StandardCommandDispatcher();
             dispatcher._textView = textView;
+            dispatcher._services = services;
             interopTextView.AddCommandFilter(dispatcher, out dispatcher._commandChain);
         }
 
@@ -55,6 +57,7 @@ namespace Hestia.FSharpCommands
                 {
                     var command = commandMapping.CreateCommand();
                     command.TextView = _textView;
+                    command.Services = _services;
                     command.Execute();
                     return VSConstants.S_OK;
                 }
