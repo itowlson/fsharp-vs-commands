@@ -15,6 +15,7 @@ namespace Hestia.FSharpCommands.Commands
             string text = TextView.TextSnapshot.GetText();
 
             ITextBuffer buffer = TextView.TextBuffer;
+
             //ITextSnapshot snapshot = buffer.CurrentSnapshot;
             //IEditorOptions editorOptions = _controller._provider.EditorOptionsFactory.GetOptions(buffer);
             //int tabSize = editorOptions.GetOptionValue<int>(new TabSize().Key);
@@ -29,15 +30,24 @@ namespace Hestia.FSharpCommands.Commands
                 source = writer.ToString();
             }
 
+            var isSignatureFile = IsSignatureFile(buffer);
             var config = Fantomas.FormatConfig.FormatConfig.Default;  // TODO: for now
 
-            var formatted = Fantomas.CodeFormatter.formatSourceString(false /* TODO: handle FSI */, source, config);
+            var formatted = Fantomas.CodeFormatter.formatSourceString(isSignatureFile, source, config);
 
             using (var edit = buffer.CreateEdit())
             {
                 edit.Replace(0, source.Length, formatted);
                 edit.Apply();
             }
+        }
+
+        private static bool IsSignatureFile(ITextBuffer buffer)
+        {
+            ITextDocument document = buffer.Properties.GetProperty<ITextDocument>(typeof(ITextDocument));
+            var fileExtension = Path.GetExtension(document.FilePath);
+            var isSignatureFile = ".fsi".Equals(fileExtension, StringComparison.OrdinalIgnoreCase);  // There isn't a distinct content type for FSI files, so we have to use the file extension
+            return isSignatureFile;
         }
     }
 }
