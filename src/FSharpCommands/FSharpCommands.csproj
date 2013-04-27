@@ -105,6 +105,8 @@
     <Compile Include="StandardCommandDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextViewHookHelper.cs" />
+    <Compile Include="Utils\Cursor.cs" />
+    <Compile Include="Utils\Disposable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

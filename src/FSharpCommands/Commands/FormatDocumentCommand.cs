@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hestia.FSharpCommands.Utils;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
 
 namespace Hestia.FSharpCommands.Commands
 {
@@ -12,14 +15,21 @@ namespace Hestia.FSharpCommands.Commands
     {
         public override void Execute()
         {
+            using (Cursor.Wait())
+            {
+                ExecuteFormat();
+            }
+        }
+
+        private void ExecuteFormat()
+        {
             string text = TextView.TextSnapshot.GetText();
 
             ITextBuffer buffer = TextView.TextBuffer;
 
-            //ITextSnapshot snapshot = buffer.CurrentSnapshot;
-            //IEditorOptions editorOptions = _controller._provider.EditorOptionsFactory.GetOptions(buffer);
-            //int tabSize = editorOptions.GetOptionValue<int>(new TabSize().Key);
-            //int indentSize = editorOptions.GetOptionValue<int>(new IndentSize().Key);
+            IEditorOptions editorOptions = Services.EditorOptionsFactory.GetOptions(buffer);
+            int indentSize = editorOptions.GetOptionValue<int>(new IndentSize().Key);
+            FantomasOptionsPage customOptions = (FantomasOptionsPage)(Package.GetGlobalService(typeof(FantomasOptionsPage)));
 
             string source;
 
@@ -31,7 +41,17 @@ namespace Hestia.FSharpCommands.Commands
             }
 
             var isSignatureFile = IsSignatureFile(buffer);
-            var config = Fantomas.FormatConfig.FormatConfig.Default;  // TODO: for now
+
+            var config = new Fantomas.FormatConfig.FormatConfig(
+                indentSpaceNum: indentSize,
+                pageWidth: customOptions.PageWidth,
+                semicolonAtEndOfLine: customOptions.SemicolonAtEndOfLine,
+                spaceBeforeArgument: customOptions.SpaceBeforeArgument,
+                spaceBeforeColon: customOptions.SpaceBeforeColon,
+                spaceAfterComma: customOptions.SpaceAfterComma,
+                spaceAfterSemicolon: customOptions.SpaceAfterSemicolon,
+                indentOnTryWith: customOptions.IndentOnTryWith
+                );
 
             var formatted = Fantomas.CodeFormatter.formatSourceString(isSignatureFile, source, config);
 
