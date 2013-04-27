@@ -16,7 +16,7 @@ namespace Hestia.FSharpCommands
     // it's eluded me so far.
 
     [Export(typeof(IMouseProcessorProvider))]
-    [Name("arse provider")]
+    [Name("F# Dummy Command Hook")]
     [ContentType("F#")]
     [TextViewRole(PredefinedTextViewRoles.Interactive)]
     public class TextViewHookHelper : IMouseProcessorProvider
