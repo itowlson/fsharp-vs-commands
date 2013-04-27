@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="FSharpCommands.Hestia.d4101bb1-9731-4577-bdec-7d088dce2136" Version="0.0.1.0" Language="en-US" Publisher="Ivan Towlson" />
     <DisplayName>FSharpCommands</DisplayName>
-    <Description xml:space="preserve">Provides commands for working with F# in Visual Studio.Provides </Description>
+    <Description xml:space="preserve">Provides commands for working with F# in Visual Studio.</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="11.0" />
