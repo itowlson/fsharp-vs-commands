@@ -32,6 +32,7 @@ namespace Hestia.FSharpCommands
         private static readonly CommandMapping[] Commands = new CommandMapping[]
         {
             new CommandMapping(typeof(VSConstants.VSStd2KCmdID).GUID, (int)(VSConstants.VSStd2KCmdID.FORMATDOCUMENT), OLECMDF.OLECMDF_ENABLED | OLECMDF.OLECMDF_SUPPORTED, () => new FormatDocumentCommand()),
+            new CommandMapping(typeof(VSConstants.VSStd2KCmdID).GUID, (int)(VSConstants.VSStd2KCmdID.FORMATSELECTION), OLECMDF.OLECMDF_ENABLED | OLECMDF.OLECMDF_SUPPORTED, () => new FormatSelectionCommand()),
         };
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)

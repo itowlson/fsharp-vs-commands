@@ -99,7 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\FormatCommand.cs" />
     <Compile Include="Commands\FormatDocumentCommand.cs" />
+    <Compile Include="Commands\FormatSelectionCommand.cs" />
     <Compile Include="FantomasOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -110,6 +112,7 @@
     <Compile Include="TextViewHookHelper.cs" />
     <Compile Include="Utils\Cursor.cs" />
     <Compile Include="Utils\Disposable.cs" />
+    <Compile Include="Utils\TextUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
