@@ -8,6 +8,27 @@
 <member name="T:Fantomas.AssemblyInfo">
 
 </member>
+<member name="M:Fantomas.CodeFormatter.tryFormatSelectionFromString(System.Boolean,Microsoft.FSharp.Compiler.Range.range,System.String,Fantomas.FormatConfig.FormatConfig)">
+<summary>
+ Format selection in range r and keep other parts unchanged; return None if failed
+</summary>
+</member>
+<member name="M:Fantomas.CodeFormatter.formatSelectionFromString(System.Boolean,Microsoft.FSharp.Compiler.Range.range,System.String,Fantomas.FormatConfig.FormatConfig)">
+<summary>
+ Format a selected part of source string using given config; keep other parts unchanged. 
+ Notice that Line indices in range start at 1.
+</summary>
+</member>
+<member name="M:Fantomas.CodeFormatter.makeRange(System.Int32,System.Int32,System.Int32,System.Int32)">
+<summary>
+ Make a range from (startLine, startCol) to (endLine, endCol) for selecting some text
+</summary>
+</member>
+<member name="M:Fantomas.CodeFormatter.stringPos(Microsoft.FSharp.Compiler.Range.range,System.String)">
+<summary>
+ Convert from range to string positions
+</summary>
+</member>
 <member name="M:Fantomas.CodeFormatter.tryProcessSourceFile(System.String,System.IO.TextWriter,Fantomas.FormatConfig.FormatConfig)">
 <summary>
  Format inFile and write to text writer; return None if failed
@@ -69,6 +90,11 @@
 <member name="">
 
 </member>
+<member name="M:Fantomas.CodePrinter.genMemberDefnList(System.Boolean,Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Compiler.Ast.SynMemberDefn})">
+<summary>
+ Each multiline member definition has a pre and post new line. 
+</summary>
+</member>
 <member name="">
 
 </member>
@@ -89,6 +115,11 @@
 </summary>
 </member>
 <member name="M:Fantomas.CodePrinter.genComplexType(Microsoft.FSharp.Compiler.Ast.SynType)">
+<summary>
+ Some patterns could cause a parsing error
+</summary>
+</member>
+<member name="M:Fantomas.CodePrinter.genPrefixTypes(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Compiler.Ast.SynType})">
 <summary>
  The surrounding brackets aren&apos;t always neccessary
 </summary>
@@ -120,7 +151,6 @@
 <member name="M:Fantomas.CodePrinter.genMemberSig(Microsoft.FSharp.Compiler.Ast.SynMemberSig)">
 <summary>
  Add newline after un-indent to be spacing-correct
- What is this case?
  Remember that we use MemberSig of parent node
 </summary>
 </member>
@@ -163,6 +193,18 @@
 <member name="">
 
 </member>
+<member name="M:Fantomas.CodePrinter.genMemberBindingList(System.Boolean,Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Compiler.Ast.SynBinding})">
+<summary>
+ Value inter indicates printing in a interface definition. 
+ Each member is separated by a new line.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="">
 
 </member>
@@ -191,7 +233,7 @@
 <member name="M:Fantomas.CodePrinter.genSigModuleDecl(Microsoft.FSharp.Compiler.Ast.SynModuleSigDecl)">
 <summary>
  Add a new line after module-level let bindings
- There is no nested types and they have newlines in the ends of definitions
+ There is no nested types and they are recursive if there are more than one definition
 </summary>
 </member>
 <member name="">
@@ -222,35 +264,6 @@
 <member name="">
 
 </member>
-<member name="M:Fantomas.CodePrinter.|SingleModuleDecls|ComplexModuleDecls|Empty|(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Compiler.Ast.SynModuleDecl})">
-<summary>
- Group similar operations into a batch for processing
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="">
-
-</member>
-<member name="M:Fantomas.CodePrinter.hasParenthesis(Microsoft.FSharp.Compiler.Ast.SynExpr)">
-<summary>
- An infix app is multiline if it contains at least two new line infix ops
- Default mode is single-line
- Check if the expression already has surrounding parentheses
-</summary>
-</member>
-<member name="M:Fantomas.CodePrinter.multiline(Microsoft.FSharp.Compiler.Ast.SynExpr)">
-<summary>
- Check whether an expression should be broken into multiple lines
-</summary>
-</member>
-<member name="">
-
-</member>
-<member name="T:Fantomas.CodePrinter.List">
-
-</member>
 <member name="T:Fantomas.CodePrinter">
 
 </member>
@@ -263,6 +276,9 @@
 <summary>
  The original source string to query as a last resort 
 </summary>
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -405,9 +421,18 @@
 <member name="">
 
 </member>
-<member name="M:Fantomas.FormatConfig.sepColon(Fantomas.FormatConfig.Context)">
+<member name="">
+
+</member>
+<member name="M:Fantomas.FormatConfig.noNln(Microsoft.FSharp.Core.FSharpFunc{Fantomas.FormatConfig.Context,Fantomas.FormatConfig.Context},Fantomas.FormatConfig.Context)">
+<summary>
+ Skip all auto-breaking newlines
+</summary>
+</member>
+<member name="M:Fantomas.FormatConfig.colAutoNlnSkip0``1(Microsoft.FSharp.Core.FSharpFunc{Fantomas.FormatConfig.Context,Fantomas.FormatConfig.Context},System.Collections.Generic.IEnumerable{``0},Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{Fantomas.FormatConfig.Context,Fantomas.FormatConfig.Context}},Fantomas.FormatConfig.Context)">
 <summary>
  This isn&apos;t accurate if we go to new lines
+ Similar to col, skip auto newline for index 0
 </summary>
 </member>
 <member name="M:Fantomas.FormatConfig.autoNln(Microsoft.FSharp.Core.FSharpFunc{Fantomas.FormatConfig.Context,Fantomas.FormatConfig.Context},Fantomas.FormatConfig.Context)">
@@ -526,6 +551,11 @@
  Process collection - keeps context through the whole processing
  calls f for every element in sequence and f&apos; between every two elements 
  as a separator. This is a variant that works on typed collections.
+</summary>
+</member>
+<member name="M:Fantomas.FormatConfig.coli``1(Microsoft.FSharp.Core.FSharpFunc{Fantomas.FormatConfig.Context,Fantomas.FormatConfig.Context},System.Collections.Generic.IEnumerable{``0},Microsoft.FSharp.Core.FSharpFunc{System.Int32,Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{Fantomas.FormatConfig.Context,Fantomas.FormatConfig.Context}}},Fantomas.FormatConfig.Context)">
+<summary>
+ Similar to col, and supply index as well
 </summary>
 </member>
 <member name="M:Fantomas.FormatConfig.str``1(``0,Fantomas.FormatConfig.Context)">
@@ -908,6 +938,9 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
 <member name="M:Fantomas.SourceParser.|DotGetApp|_|(Microsoft.FSharp.Compiler.Ast.SynExpr)">
 <summary>
  Gather series of application for line breaking
@@ -1239,6 +1272,100 @@
 </summary>
 </member>
 <member name="T:Fantomas.SourceParser">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:Fantomas.SourceTransformer.Data`2">
+<summary>
+ This pattern prevents PropertyWithGetSet to be taken separately
+</summary>
+</member>
+<member name="M:Fantomas.SourceTransformer.|MultilineBindingL|_|(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Compiler.Ast.SynBinding})">
+<summary>
+ Gather all multiline bindings. 
+ This should be used before one-liner pattern.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="M:Fantomas.SourceTransformer.|MultilineMemberDefnL|_|(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Compiler.Ast.SynMemberDefn})">
+<summary>
+ Gather all multiline member definitions. 
+ This should be used before one-liner pattern.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:Fantomas.SourceTransformer.|PropertyWithGetSet|_|(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Compiler.Ast.SynBinding})">
+<summary>
+ Gather PropertyGetSet in one printing call. 
+ Assume that PropertySet comes right after PropertyGet.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:Fantomas.SourceTransformer.hasParenthesis(Microsoft.FSharp.Compiler.Ast.SynExpr)">
+<summary>
+ Check if the expression already has surrounding parentheses
+</summary>
+</member>
+<member name="M:Fantomas.SourceTransformer.multiline(Microsoft.FSharp.Compiler.Ast.SynExpr)">
+<summary>
+ Check whether an expression should be broken into multiple lines. 
+ Notice that order of patterns matters due to non-disjoint property.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="T:Fantomas.SourceTransformer.List">
+
+</member>
+<member name="T:Fantomas.SourceTransformer">
 
 </member>
 </members>
