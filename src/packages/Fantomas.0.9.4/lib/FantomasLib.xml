@@ -16,7 +16,7 @@
 <member name="M:Fantomas.CodeFormatter.formatSelectionFromString(System.Boolean,Microsoft.FSharp.Compiler.Range.range,System.String,Fantomas.FormatConfig.FormatConfig)">
 <summary>
  Format a selected part of source string using given config; keep other parts unchanged. 
- Notice that Line indices in range start at 1.
+ Notice that Line indices start at 1 while Column indices start at 0.
 </summary>
 </member>
 <member name="M:Fantomas.CodeFormatter.makeRange(System.Int32,System.Int32,System.Int32,System.Int32)">
